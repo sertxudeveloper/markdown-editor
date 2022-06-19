@@ -1,0 +1,51 @@
+{
+  "name": "markdown-editor",
+  "version": "1.0.0",
+  "description": "A customizable markdown editor for your projects",
+  "main": "./build/main.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development",
+    "watch": "webpack --watch --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sertxudeveloper/markdown-editor.git"
+  },
+  "keywords": [
+    "sertxudeveloper",
+    "laravel",
+    "markdown-editor",
+    "alpinejs",
+    "tailwindcss",
+    "editor",
+    "markdown",
+    "customizable"
+  ],
+  "author": "Sergio Peris <dev.sertxu@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sertxudeveloper/markdown-editor/issues"
+  },
+  "homepage": "https://github.com/sertxudeveloper/markdown-editor#readme",
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.2",
+    "autoprefixer": "^10.4.7",
+    "css-loader": "^5.2.7",
+    "dompurify": "^2.3.8",
+    "marked": "^4.0.17",
+    "postcss": "^8.4.14",
+    "postcss-loader": "^4.3.0",
+    "raw-loader": "^4.0.2",
+    "sass-loader": "^13.0.0",
+    "style-loader": "^2.0.0",
+    "tailwindcss": "^3.1.3",
+    "ts-loader": "^9.3.0",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
+  },
+  "peerDependencies": {
+    "alpinejs": "^3.0.0",
+    "tailwindcss": "3.0.0"
+  }
+}
