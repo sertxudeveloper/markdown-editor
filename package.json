@@ -1,14 +1,15 @@
 {
   "name": "markdown-editor",
-	"exportName": "MarkdownEditor",
+  "exportName": "MarkdownEditor",
   "version": "1.0.0",
   "description": "A customizable markdown editor for your projects",
   "main": "./build/MarkdownEditor.js",
-	"module": "./build/MarkdownEditor.js",
+  "module": "./build/MarkdownEditor.js",
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
-    "watch": "webpack --watch --mode development"
+    "watch": "webpack --watch --mode development",
+    "watch:prod": "webpack --watch --mode production"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "autoprefixer": "^10.4.7",
     "css-loader": "^5.2.7",
     "dompurify": "^2.3.8",
+    "lodash": "^4.17.21",
     "marked": "^4.0.17",
     "postcss": "^8.4.14",
     "postcss-loader": "^4.3.0",

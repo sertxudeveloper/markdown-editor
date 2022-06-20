@@ -7,13 +7,13 @@
   }
 
   .toolbar {
-    @apply border-b flex justify-between px-4 py-3;
+    @apply border-b flex justify-between px-4 py-2.5 text-sm;
 
     .mode-buttons {
       @apply flex gap-x-4;
 
       > div {
-        @apply first-letter:uppercase border-b-2 border-b-transparent select-none;
+        @apply first-letter:uppercase border-b border-b-transparent select-none mt-0.5 px-1;
       }
     }
 

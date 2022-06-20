@@ -85,11 +85,6 @@ export default class Editor {
 
     this.sourceElement.innerHTML = ''
 
-    this.initPlugins()
-
-    let toolbar = this.initToolbar()
-    this.sourceElement.appendChild(toolbar)
-
     let editor = document.createElement('div')
     editor.classList.add('markdown-editor')
 
@@ -106,6 +101,11 @@ export default class Editor {
     this.preview = document.createElement('div')
     this.preview.classList.add('markdown-editor-preview')
     editor.appendChild(this.preview)
+
+    this.initPlugins()
+
+    let toolbar = this.initToolbar()
+    this.sourceElement.appendChild(toolbar)
 
     this.sourceElement.appendChild(editor)
 

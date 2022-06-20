@@ -17,12 +17,12 @@ export default abstract class Plugin {
 
   abstract getTitle(): string
 
-  private startListening() {
-    this.editor.sourceElement.addEventListener('keydown', this.onKeyDown.bind(this))
+  startListening() {
+    this.editor.textarea.addEventListener('keydown', this.onKeyDown.bind(this))
   }
 
-  private stopListening() {
-    this.editor.sourceElement.removeEventListener('keydown', this.onKeyDown.bind(this))
+  stopListening() {
+    this.editor.textarea.removeEventListener('keydown', this.onKeyDown.bind(this))
   }
 
   abstract getIcon(): string
