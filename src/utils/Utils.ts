@@ -180,3 +180,6 @@ export const makePrefix = function (index: number, unorderedList: boolean): stri
   }
 }
 
+export const isAtCursor = function (textarea: HTMLTextAreaElement, start: number, end: number): boolean {
+  return textarea.selectionEnd >= start && textarea.selectionEnd <= end;
+}

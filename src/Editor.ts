@@ -10,6 +10,7 @@ import UnorderedList from "./plugins/unordered-list/UnorderedList"
 import Strike from "./plugins/strike/Strike"
 import Underline from "./plugins/underline/Underline"
 import Mark from "./plugins/mark/Mark"
+import Mentions from "./plugins/mentions/Mentions"
 
 /**
  * Markdown Editor class
@@ -32,6 +33,8 @@ export default class Editor {
       UnorderedList,
       OrderedList,
       Mark,
+
+      Mentions,
     ],
 
     plugins: [],
