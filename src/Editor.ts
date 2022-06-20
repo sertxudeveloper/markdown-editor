@@ -18,10 +18,10 @@ export default class Editor {
 
   sourceElement?: HTMLElement | undefined
 
-  config: any = {
+  static config: any = {
     placeholder: 'Start writing...',
 
-    plugins: [
+    builtinPlugins: [
       Bold,
       Italic,
       Strike,
@@ -32,7 +32,9 @@ export default class Editor {
       UnorderedList,
       OrderedList,
       Mark,
-    ]
+    ],
+
+    plugins: [],
   }
 
   private eventCallbacks: object[] = []
@@ -43,20 +45,20 @@ export default class Editor {
 
   preview?: HTMLDivElement | undefined
 
-  /** Get an HTMLElement or an element id */
+  /** Get an HTMLElement or an element query selector */
   constructor(element: string | HTMLElement, config: any = {}) {
     if (typeof element === 'string') {
-      this.sourceElement = document.getElementById(element)
+      this.sourceElement = document.querySelector(element)
     } else {
       this.sourceElement = element
     }
 
     if (!this.sourceElement) {
-      throw new Error('No element found')
+      throw new Error('[MarkdownEditor]: No element found')
     }
 
     /** Merge config */
-    this.config = Object.assign(this.config, config)
+    Editor.config = Object.assign(Editor.config, config)
 
     this.init()
 
@@ -65,8 +67,10 @@ export default class Editor {
 
   /** Initialize plugins */
   initPlugins() {
-    for (const plugin in <Plugin[]>this.config.plugins) {
-      this.plugins.push(new this.config.plugins[plugin](this))
+    const plugins = [...Editor.config.builtinPlugins, ...Editor.config.plugins]
+
+    for (const plugin in plugins) {
+      this.plugins.push(new plugins[plugin](this))
     }
   }
 
@@ -92,7 +96,7 @@ export default class Editor {
     this.textarea = document.createElement('textarea')
     this.textarea.classList.add('markdown-editor-write')
     this.textarea.value = initialValue
-    this.textarea.placeholder = this.config.placeholder
+    this.textarea.placeholder = Editor.config.placeholder
 
     this.textarea.addEventListener('input', this.autoresize.bind(this))
     this.textarea.addEventListener('input', this.updatePreview.bind(this))
@@ -111,6 +115,7 @@ export default class Editor {
 
   /** Autorezise the textarea */
   private autoresize() {
+    this.textarea.style.height = 'auto'
     this.textarea.style.height = this.textarea.scrollHeight + 'px'
   }
 
@@ -129,7 +134,8 @@ export default class Editor {
 
     // Add write and preview buttons
     for (const mode of ['write', 'preview']) {
-      let button = document.createElement('button')
+      let button = document.createElement('div')
+      button.setAttribute('role', 'button')
       button.classList.add(mode)
       button.onclick = () => this.changeMode(mode)
       button.innerText = mode
@@ -145,7 +151,8 @@ export default class Editor {
 
     // Add style buttons
     for (const plugin of this.plugins) {
-      let button = document.createElement('button')
+      let button = document.createElement('div')
+      button.setAttribute('role', 'button')
       button.addEventListener('click', plugin.execute.bind(plugin))
       button.innerHTML = plugin.getIcon()
       styleButtons.appendChild(button)

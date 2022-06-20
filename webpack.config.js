@@ -11,8 +11,8 @@ module.exports = {
 		// The name under which the editor will be exported.
 		library: 'MarkdownEditor',
 
-		path: path.resolve( __dirname, 'sample' ),
-		filename: 'editor.js',
+		path: path.resolve( __dirname, 'build' ),
+		filename: 'MarkdownEditor.js',
 		libraryTarget: 'umd',
 		libraryExport: 'default'
 	},

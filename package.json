@@ -1,8 +1,10 @@
 {
   "name": "markdown-editor",
+	"exportName": "MarkdownEditor",
   "version": "1.0.0",
   "description": "A customizable markdown editor for your projects",
-  "main": "./build/main.js",
+  "main": "./build/MarkdownEditor.js",
+	"module": "./build/MarkdownEditor.js",
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
