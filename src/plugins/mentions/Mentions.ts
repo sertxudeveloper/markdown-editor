@@ -17,6 +17,7 @@ export type MentionFeed = {
   feed: [FeedItem]|Promise<[FeedItem]>;
   minimumCharacters?: number;
   pattern?: RegExp;
+  itemRenderer?: Function;
 }
 
 export type Mention = {
@@ -133,6 +134,8 @@ export default class Mentions extends Plugin {
 
   destroyMentionsListbox(): void {
     if (this.mentionsListbox) this.editor.textarea.parentElement.removeChild(this.mentionsListbox);
+
+    this.mentionsListbox = null;
   }
 
   createMentionsListbox(prefix: string, search: string, cursorTop: string, cursorLeft: string): void {
@@ -148,54 +151,37 @@ export default class Mentions extends Plugin {
 
     this.fetchMentions(prefix, search)
       .then(mentions => {
-        this.mentionsListbox.innerHTML = mentions.map(item => {
+        let feed = this.feeds.find(feed => feed.prefix === prefix);
 
-          const itemContainer = document.createElement('div')
-          itemContainer.classList.add('ck-reset_all-excluded')
+        let mentionsElements = mentions.map((item): HTMLElement => {
 
-          const itemElement = document.createElement('div')
-          itemElement.classList.add('flex', 'space-x-2', 'items-center')
+          if (feed.itemRenderer && typeof feed.itemRenderer === 'function') {
+            return feed.itemRenderer(item);
+          }
 
-          const fullnameElement = document.createElement('span')
-          fullnameElement.classList.add('text-sm', 'text-gray-900')
-          fullnameElement.innerText = item.name
+          return this.itemRenderer(item);
+        })
 
-          const usernameElement = document.createElement('span')
-          usernameElement.classList.add('text-sm', 'text-gray-600')
-          usernameElement.innerText = item.id
-
-          const avatarElement = document.createElement('img')
-          avatarElement.classList.add('h-6', 'rounded-full', 'w-6')
-          avatarElement.src = 'https://example.com/' + item.id + '.png'
-
-          itemElement.appendChild(avatarElement)
-          itemElement.appendChild(fullnameElement)
-          itemElement.appendChild(usernameElement)
-
-          itemContainer.appendChild(itemElement)
-
-          return itemContainer
-
-        }).join('');
+        this.mentionsListbox.innerHTML = mentionsElements.map(e => e.outerHTML).join('');
       })
       .catch(error => {
         console.error(error);
       });
 
-    this.mentionsListbox.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
 
-      let target = event.target as HTMLAnchorElement;
-      let mention = target.innerText;
-
-      this.editor.textarea.focus();
-
-      this.editor.textarea.value = this.editor.textarea.value.substring(0, this.editor.textarea.selectionStart) + mention + this.editor.textarea.value.substring(this.editor.textarea.selectionEnd);
-
-      this.destroyMentionsListbox();
-    });
-
+    // this.mentionsListbox.addEventListener('click', (event) => {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //
+    //   let target = event.target as HTMLAnchorElement;
+    //   let mention = target.innerText;
+    //
+    //   this.editor.textarea.focus();
+    //
+    //   this.editor.textarea.value = this.editor.textarea.value.substring(0, this.editor.textarea.selectionStart) + mention + this.editor.textarea.value.substring(this.editor.textarea.selectionEnd);
+    //
+    //   this.destroyMentionsListbox();
+    // });
   }
 
   fetchMentions(prefix: string, search: string): Promise<FeedItem[]> {
@@ -204,5 +190,32 @@ export default class Mentions extends Plugin {
     if (!feed) return Promise.reject(new Error(`No feed found for prefix: ${prefix}`));
 
     return Promise.resolve(feed.feed);
+  }
+
+  itemRenderer(item: FeedItem): HTMLElement {
+    const itemContainer = document.createElement('div')
+    itemContainer.setAttribute('role', 'button');
+    itemContainer.classList.add('mentions-listbox-item');
+
+    if (item.link) {
+      const linkElement = document.createElement('a');
+      linkElement.href = item.link;
+      linkElement.title = item.name;
+      linkElement.innerText = item.name;
+      linkElement.target = '_blank';
+      itemContainer.appendChild(linkElement);
+    } else {
+      const nameElement = document.createElement('span')
+      nameElement.innerText = item.name
+      nameElement.classList.add('mentions-listbox-item-name')
+      itemContainer.appendChild(nameElement)
+
+      const idElement = document.createElement('span')
+      idElement.innerText = item.id
+      idElement.classList.add('mentions-listbox-item-id')
+      itemContainer.appendChild(idElement)
+    }
+
+    return itemContainer
   }
 }

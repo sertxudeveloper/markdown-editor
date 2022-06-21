@@ -66,6 +66,26 @@
     .markdown-editor-preview {
       @apply max-w-none pt-5 px-5 pb-1 break-words;
     }
+
+    .mentions-listbox {
+      @apply border rounded-md shadow-md w-64;
+
+      .mentions-listbox-item {
+        @apply p-2;
+
+        &:hover {
+          @apply bg-blue-100;
+        }
+
+        .mentions-listbox-item-name {
+          @apply text-gray-900 mr-2 text-sm font-medium;
+        }
+
+        .mentions-listbox-item-id {
+          @apply text-gray-600 text-sm;
+        }
+      }
+    }
   }
 
   &.markdown-editor-write {
