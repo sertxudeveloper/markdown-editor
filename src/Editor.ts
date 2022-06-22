@@ -20,6 +20,8 @@ export default class Editor {
   sourceElement?: HTMLElement | undefined
 
   static config: any = {
+    key: 'editor',
+
     placeholder: 'Start writing...',
 
     builtinPlugins: [
@@ -93,6 +95,8 @@ export default class Editor {
 
     this.textarea = document.createElement('textarea')
     this.textarea.classList.add('markdown-editor-write')
+    this.textarea.name = Editor.config.key
+    this.textarea.id = Editor.config.key
     this.textarea.value = initialValue
     this.textarea.placeholder = Editor.config.placeholder
 
@@ -203,5 +207,9 @@ export default class Editor {
 
   getValue() {
     return this.textarea?.value || ''
+  }
+
+  setValue(value: string) {
+    if (this.textarea) this.textarea.value = value
   }
 }

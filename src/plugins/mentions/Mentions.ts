@@ -12,7 +12,7 @@ export type FeedItem = {
 
 export type MentionFeed = {
   prefix: string;
-  feed: [FeedItem] | Promise<[FeedItem]>;
+  feed: [FeedItem] | Function;
   minimumCharacters?: number;
   pattern?: RegExp;
   itemRenderer?: Function;
@@ -131,7 +131,7 @@ export default class Mentions extends Plugin {
   }
 
   destroyMentionsListbox(): void {
-    if (this.mentionsListbox) this.editor.textarea.parentElement.removeChild(this.mentionsListbox);
+    if (this.mentionsListbox) this.mentionsListbox.remove();
 
     this.mentionsListbox = null;
   }
@@ -139,12 +139,20 @@ export default class Mentions extends Plugin {
   createMentionsListbox(prefix: string, search: string, cursorTop: string, cursorLeft: string): void {
     if (this.mentionsListbox) this.destroyMentionsListbox();
 
+    let feed = this.feeds.find(feed => feed.prefix === prefix);
+    if (!feed) return;
+
+    if (feed.minimumCharacters && search.length < feed.minimumCharacters) return;
+
+    this.mentionsListbox = document.createElement('div');
+    this.mentionsListbox.classList.add('mentions-listbox');
+    this.mentionsListbox.style.position = 'absolute';
+    this.mentionsListbox.style.top = cursorTop;
+    this.mentionsListbox.style.left = cursorLeft;
+
     // Fetch the mentions, render them, add the click event handler and append them to the listbox
     this.fetchMentions(prefix, search)
       .then(mentions => {
-        let feed = this.feeds.find(feed => feed.prefix === prefix);
-        if (!feed) return;
-
         let mentionsElements = mentions.map((item): HTMLElement => {
           let element
 
@@ -161,12 +169,6 @@ export default class Mentions extends Plugin {
         })
 
         if (!mentionsElements.length) return;
-
-        this.mentionsListbox = document.createElement('div');
-        this.mentionsListbox.classList.add('mentions-listbox');
-        this.mentionsListbox.style.position = 'absolute';
-        this.mentionsListbox.style.top = cursorTop;
-        this.mentionsListbox.style.left = cursorLeft;
 
         this.mentionsListbox.append(...mentionsElements);
 
@@ -185,7 +187,9 @@ export default class Mentions extends Plugin {
       return Promise.resolve(feed.feed.filter(item => item.name.toLowerCase().includes(search.toLowerCase()) || item.id.toLowerCase().includes(search.toLowerCase())));
     }
 
-    return Promise.resolve(feed.feed);
+    let promise = feed.feed(search);
+
+    return Promise.resolve(promise);
   }
 
   itemRenderer(item: FeedItem): HTMLElement {
