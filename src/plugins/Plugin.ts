@@ -29,5 +29,5 @@ export default abstract class Plugin {
 
   abstract onKeyDown(event: KeyboardEvent): void
 
-  abstract execute(): void
+  abstract execute(value: string): void
 }

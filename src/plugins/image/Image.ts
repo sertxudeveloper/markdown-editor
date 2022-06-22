@@ -20,7 +20,7 @@ export default class Image extends Plugin {
     //
   }
 
-  execute(): void {
+  execute(value: string = ''): void {
     if (!this.editor.textarea) return
     const textarea = this.editor.textarea
 

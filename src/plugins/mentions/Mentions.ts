@@ -61,7 +61,7 @@ export default class Mentions extends Plugin {
     this.debouncedHandler(event);
   }
 
-  execute(): void {
+  execute(value: string = ''): void {
     // throw new Error("Method not implemented.");
   }
 

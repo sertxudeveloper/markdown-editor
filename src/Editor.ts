@@ -98,6 +98,7 @@ export default class Editor {
 
     this.textarea.addEventListener('input', this.autoresize.bind(this))
     this.textarea.addEventListener('input', this.updatePreview.bind(this))
+    this.textarea.addEventListener('input', this.onValueChange.bind(this))
 
     editor.appendChild(this.textarea)
 
@@ -186,11 +187,17 @@ export default class Editor {
   }
 
   /** Execute a command */
-  private execute(command: string) {
+  execute(command: string, value: string = '') {
     // Find the plugin with the given command
     let plugin = this.plugins.find(plugin => plugin.getKey() === command)
     if (!plugin) return
 
-    plugin.execute()
+    plugin.execute(value)
+  }
+
+  onValueChange() {
+    if (this.eventCallbacks['change'] && typeof this.eventCallbacks['change'] === 'function') {
+      this.eventCallbacks['change']()
+    }
   }
 }
