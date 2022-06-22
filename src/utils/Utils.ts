@@ -74,6 +74,12 @@ export const insertText = function (textarea: HTMLTextAreaElement, { text, selec
     } else {
       textarea.setSelectionRange(originalSelectionStart, textarea.selectionEnd);
     }
+
+    // Scroll the textarea to the cursor.
+    const charsPerRow = textarea.cols;
+    const selectionRow = (selectionStart - (selectionStart % charsPerRow)) / charsPerRow;
+    const lineHeight = textarea.clientHeight / textarea.rows;
+    textarea.scrollTop = lineHeight * selectionRow;
   })
 }
 

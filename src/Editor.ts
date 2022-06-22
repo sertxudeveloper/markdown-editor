@@ -210,6 +210,9 @@ export default class Editor {
   }
 
   setValue(value: string) {
-    if (this.textarea) this.textarea.value = value
+    if (this.textarea) {
+      this.textarea.value = value
+      this.textarea.dispatchEvent(new InputEvent('input'));
+    }
   }
 }
