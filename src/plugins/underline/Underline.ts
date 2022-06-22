@@ -27,6 +27,6 @@ export default class Underline extends Plugin {
     if (!this.editor.textarea) return;
     const textarea = this.editor.textarea;
 
-    BlockStyle.applyStyle(textarea, { prefix: "<ins>", suffix: "</ins>", trimFirst: true });
+    BlockStyle.applyStyle(textarea, { prefix: "<u>", suffix: "</u>", trimFirst: true });
   }
 }

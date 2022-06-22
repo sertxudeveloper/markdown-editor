@@ -27,7 +27,7 @@ export default class Strike extends Plugin {
     if (!this.editor.textarea) return
     const textarea = this.editor.textarea
 
-    BlockStyle.applyStyle(textarea, { prefix: "~", suffix: "~", trimFirst: true })
+    BlockStyle.applyStyle(textarea, { prefix: "<s>", suffix: "</s>", trimFirst: true })
   }
 
 }

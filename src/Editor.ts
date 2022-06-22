@@ -10,7 +10,15 @@ import UnorderedList from "./plugins/unordered-list/UnorderedList"
 import Strike from "./plugins/strike/Strike"
 import Underline from "./plugins/underline/Underline"
 import Mark from "./plugins/mark/Mark"
-import Mentions from "./plugins/mentions/Mentions"
+import Mentions, { MentionFeed } from "./plugins/mentions/Mentions"
+
+export type EditorConfig = {
+  key?: string
+  plugins?: Plugin[]
+  placeholder?: string
+  mentions?: MentionFeed[]
+  imageBrowserUrl?: string
+}
 
 /**
  * Markdown Editor class
@@ -39,7 +47,11 @@ export default class Editor {
       Mentions,
     ],
 
+    mentions: [],
+
     plugins: [],
+
+    imageBrowserUrl: '',
   }
 
   private eventCallbacks: object[] = []
