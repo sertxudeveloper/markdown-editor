@@ -154,10 +154,13 @@ export default class Editor {
 
     // Add style buttons
     for (const plugin of this.plugins) {
+      let icon = plugin.getIcon()
+      if (!icon) continue
+
       let button = document.createElement('div')
       button.setAttribute('role', 'button')
       button.addEventListener('click', plugin.execute.bind(plugin))
-      button.innerHTML = plugin.getIcon()
+      button.innerHTML = icon
       styleButtons.appendChild(button)
     }
 

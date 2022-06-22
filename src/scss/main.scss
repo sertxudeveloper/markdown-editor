@@ -71,7 +71,7 @@
       @apply border rounded-md shadow-md w-64;
 
       .mentions-listbox-item {
-        @apply p-2;
+        @apply py-2 px-3;
 
         &:hover {
           @apply bg-blue-100;

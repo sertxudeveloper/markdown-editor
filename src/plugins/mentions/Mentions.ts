@@ -1,20 +1,18 @@
 import Plugin from "markdown-editor/src/plugins/Plugin";
 import Editor from "../../Editor";
-import{ debounce } from "lodash";
+import { debounce } from "lodash";
 import getCaretCoordinates from 'textarea-caret';
 
-import icon from "./icon.svg";
-import { isAtCursor } from "../../utils/Utils";
+import { expandSelectedText, insertText, isAtCursor } from "../../utils/Utils";
 
 export type FeedItem = {
   id: string;
   name: string;
-  link?: string;
 }
 
 export type MentionFeed = {
   prefix: string;
-  feed: [FeedItem]|Promise<[FeedItem]>;
+  feed: [FeedItem] | Promise<[FeedItem]>;
   minimumCharacters?: number;
   pattern?: RegExp;
   itemRenderer?: Function;
@@ -51,7 +49,7 @@ export default class Mentions extends Plugin {
   }
 
   getIcon(): string {
-    return icon;
+    return '';
   }
 
   onKeyDown(event: KeyboardEvent): void {
@@ -86,10 +84,10 @@ export default class Mentions extends Plugin {
   }
 
   initializeFeeds() {
-		const feedsWithPattern = Editor.config.mentions.map(feed => ({
-			...feed,
-			pattern: this.createRegExp(feed.prefix, feed.minimumCharacters || 0)
-		}));
+    const feedsWithPattern = Editor.config.mentions.map(feed => ({
+      ...feed,
+      pattern: this.createRegExp(feed.prefix, feed.minimumCharacters || 0)
+    }));
 
     this.feeds = feedsWithPattern;
   }
@@ -139,55 +137,53 @@ export default class Mentions extends Plugin {
   }
 
   createMentionsListbox(prefix: string, search: string, cursorTop: string, cursorLeft: string): void {
-    if (this.mentionsListbox) return;
+    if (this.mentionsListbox) this.destroyMentionsListbox();
 
-    this.mentionsListbox = document.createElement('div');
-    this.mentionsListbox.classList.add('mentions-listbox');
-    this.mentionsListbox.style.position = 'absolute';
-    this.mentionsListbox.style.top = cursorTop;
-    this.mentionsListbox.style.left = cursorLeft;
-
-    this.editor.textarea.parentElement.appendChild(this.mentionsListbox);
-
+    // Fetch the mentions, render them, add the click event handler and append them to the listbox
     this.fetchMentions(prefix, search)
       .then(mentions => {
         let feed = this.feeds.find(feed => feed.prefix === prefix);
+        if (!feed) return;
 
         let mentionsElements = mentions.map((item): HTMLElement => {
+          let element
 
           if (feed.itemRenderer && typeof feed.itemRenderer === 'function') {
-            return feed.itemRenderer(item);
+            element = feed.itemRenderer(item);
+          } else {
+            element = this.itemRenderer(item);
           }
 
-          return this.itemRenderer(item);
+          // Add the click event handler
+          element.addEventListener('click', this.onMentionClick.bind(this, item));
+
+          return element
         })
 
-        this.mentionsListbox.innerHTML = mentionsElements.map(e => e.outerHTML).join('');
+        if (!mentionsElements.length) return;
+
+        this.mentionsListbox = document.createElement('div');
+        this.mentionsListbox.classList.add('mentions-listbox');
+        this.mentionsListbox.style.position = 'absolute';
+        this.mentionsListbox.style.top = cursorTop;
+        this.mentionsListbox.style.left = cursorLeft;
+
+        this.mentionsListbox.append(...mentionsElements);
+
+        this.editor.textarea.parentElement.appendChild(this.mentionsListbox);
       })
-      .catch(error => {
-        console.error(error);
-      });
-
-
-    // this.mentionsListbox.addEventListener('click', (event) => {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //
-    //   let target = event.target as HTMLAnchorElement;
-    //   let mention = target.innerText;
-    //
-    //   this.editor.textarea.focus();
-    //
-    //   this.editor.textarea.value = this.editor.textarea.value.substring(0, this.editor.textarea.selectionStart) + mention + this.editor.textarea.value.substring(this.editor.textarea.selectionEnd);
-    //
-    //   this.destroyMentionsListbox();
-    // });
   }
 
   fetchMentions(prefix: string, search: string): Promise<FeedItem[]> {
     let feed = this.feeds.find(feed => feed.prefix === prefix);
 
     if (!feed) return Promise.reject(new Error(`No feed found for prefix: ${prefix}`));
+
+    if (feed.feed instanceof Array) {
+      // Search the feed for the search term and return the results
+
+      return Promise.resolve(feed.feed.filter(item => item.name.toLowerCase().includes(search.toLowerCase()) || item.id.toLowerCase().includes(search.toLowerCase())));
+    }
 
     return Promise.resolve(feed.feed);
   }
@@ -197,25 +193,28 @@ export default class Mentions extends Plugin {
     itemContainer.setAttribute('role', 'button');
     itemContainer.classList.add('mentions-listbox-item');
 
-    if (item.link) {
-      const linkElement = document.createElement('a');
-      linkElement.href = item.link;
-      linkElement.title = item.name;
-      linkElement.innerText = item.name;
-      linkElement.target = '_blank';
-      itemContainer.appendChild(linkElement);
-    } else {
-      const nameElement = document.createElement('span')
-      nameElement.innerText = item.name
-      nameElement.classList.add('mentions-listbox-item-name')
-      itemContainer.appendChild(nameElement)
+    const nameElement = document.createElement('span')
+    nameElement.innerText = item.name
+    nameElement.classList.add('mentions-listbox-item-name')
+    itemContainer.appendChild(nameElement)
 
-      const idElement = document.createElement('span')
-      idElement.innerText = item.id
-      idElement.classList.add('mentions-listbox-item-id')
-      itemContainer.appendChild(idElement)
-    }
+    const idElement = document.createElement('span')
+    idElement.innerText = item.id
+    idElement.classList.add('mentions-listbox-item-id')
+    itemContainer.appendChild(idElement)
 
     return itemContainer
+  }
+
+  onMentionClick(item: FeedItem, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    expandSelectedText(this.editor.textarea, '', '');
+
+    let position = this.editor.textarea.selectionStart + item.id.length + 1;
+    insertText(this.editor.textarea, {text: item.id + ' ', selectionStart: position, selectionEnd: position});
+
+    this.destroyMentionsListbox();
   }
 }

@@ -110,7 +110,7 @@ export const wordSelectionEnd = function (text: string, i: number, multiline: bo
 export const wordSelectionStart = function (text: string, i: number) {
   let index = i;
 
-  while (text[index] && text[index - 1] != null && !text[index - 1].match(/\s/)) {
+  while (text[index - 1] != null && !text[index - 1].match(/\s/)) {
     index--;
   }
 
