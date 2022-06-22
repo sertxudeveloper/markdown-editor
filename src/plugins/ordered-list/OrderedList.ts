@@ -54,6 +54,6 @@ export default class OrderedList extends Plugin {
     if (!this.editor.textarea) return
     const textarea = this.editor.textarea
 
-    ListStyle.applyStyle(textarea, { prefix: "1. ", unorderedList: true })
+    ListStyle.applyStyle(textarea, { prefix: "1. ", orderedList: true })
   }
 }
