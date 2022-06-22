@@ -200,4 +200,8 @@ export default class Editor {
       this.eventCallbacks['change']()
     }
   }
+
+  getValue() {
+    return this.textarea?.value || ''
+  }
 }
