@@ -12,9 +12,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   tagged-release:
-    name: "Tagged Release"
     runs-on: "ubuntu-latest"
-
     steps:
       - name: "Create Release"
       - uses: "marvinpinto/action-automatic-releases@latest"
