@@ -1,4 +1,4 @@
-import Plugin from "markdown-editor/src/plugins/Plugin";
+import Plugin from "../Plugin";
 import Editor from "../../Editor";
 import { debounce } from "lodash";
 import getCaretCoordinates from 'textarea-caret';
