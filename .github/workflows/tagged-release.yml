@@ -1,20 +1,19 @@
-# This is a basic workflow to help you get started with Actions
+# Create a new release on GitHub when a tag is created
 
-name: "tagged-release"
+name: GitHub Release
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push events but only for the tags staring with "v*"
   push:
+    branches:
+      - "!*"
     tags:
-      - "v*"
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   tagged-release:
     runs-on: "ubuntu-latest"
     steps:
-      - name: "Create Release"
+      - uses: actions/checkout@v3
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
