@@ -33,7 +33,7 @@ export default class ImageBrowser {
 
   fetchImages(): Promise<Image[]> {
     return new Promise((resolve, reject) => {
-      fetch(Editor.config.imageBrowserUrl, {
+      fetch(this.editor.config.imageBrowserUrl, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

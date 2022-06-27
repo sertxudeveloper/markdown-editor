@@ -14,10 +14,46 @@ import Mentions, { MentionFeed } from "./plugins/mentions/Mentions"
 
 export type EditorConfig = {
   key?: string
-  plugins?: Plugin[]
+  plugins?: Object[]
   placeholder?: string
   mentions?: MentionFeed[]
   imageBrowserUrl?: string
+}
+
+type EditorDefaultConfig = {
+  key?: string
+  plugins?: Object[]
+  builtinPlugins?: Object[]
+  placeholder?: string
+  mentions?: MentionFeed[]
+  imageBrowserUrl?: string
+}
+
+const defaultConfig: EditorDefaultConfig = {
+  key: 'editor',
+
+  placeholder: 'Start writing...',
+
+  builtinPlugins: [
+    Bold,
+    Italic,
+    Strike,
+    Underline,
+    Quote,
+    Link,
+    Image,
+    UnorderedList,
+    OrderedList,
+    Mark,
+
+    Mentions,
+  ],
+
+  mentions: [],
+
+  plugins: [],
+
+  imageBrowserUrl: '',
 }
 
 /**
@@ -27,32 +63,7 @@ export default class Editor {
 
   sourceElement?: HTMLElement | undefined
 
-  static config: any = {
-    key: 'editor',
-
-    placeholder: 'Start writing...',
-
-    builtinPlugins: [
-      Bold,
-      Italic,
-      Strike,
-      Underline,
-      Quote,
-      Link,
-      Image,
-      UnorderedList,
-      OrderedList,
-      Mark,
-
-      Mentions,
-    ],
-
-    mentions: [],
-
-    plugins: [],
-
-    imageBrowserUrl: '',
-  }
+  config: any = {}
 
   private eventCallbacks: object[] = []
 
@@ -75,7 +86,7 @@ export default class Editor {
     }
 
     /** Merge config */
-    Editor.config = Object.assign(Editor.config, config)
+    this.config = Object.assign(defaultConfig, config)
 
     this.init()
 
@@ -84,7 +95,7 @@ export default class Editor {
 
   /** Initialize plugins */
   initPlugins() {
-    const plugins = [...Editor.config.builtinPlugins, ...Editor.config.plugins]
+    const plugins = [...this.config.builtinPlugins, ...this.config.plugins]
 
     for (const plugin in plugins) {
       this.plugins.push(new plugins[plugin](this))
@@ -107,10 +118,10 @@ export default class Editor {
 
     this.textarea = document.createElement('textarea')
     this.textarea.classList.add('markdown-editor-write')
-    this.textarea.name = Editor.config.key
-    this.textarea.id = Editor.config.key
+    this.textarea.name = this.config.key
+    this.textarea.id = this.config.key
     this.textarea.value = initialValue
-    this.textarea.placeholder = Editor.config.placeholder
+    this.textarea.placeholder = this.config.placeholder
 
     this.textarea.addEventListener('input', this.autoresize.bind(this))
     this.textarea.addEventListener('input', this.updatePreview.bind(this))

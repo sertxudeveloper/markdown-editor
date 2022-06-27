@@ -33,7 +33,7 @@ export default class Mentions extends Plugin {
   mentionsListbox?: HTMLDivElement;
 
   constructor(editor: Editor) {
-    if (Editor.config.mentions.length === 0) return;
+    if (editor.config.mentions.length === 0) return;
 
     super(editor);
 
@@ -84,7 +84,7 @@ export default class Mentions extends Plugin {
   }
 
   initializeFeeds() {
-    const feedsWithPattern = Editor.config.mentions.map(feed => ({
+    const feedsWithPattern = this.editor.config.mentions.map(feed => ({
       ...feed,
       pattern: this.createRegExp(feed.prefix, feed.minimumCharacters || 0)
     }));

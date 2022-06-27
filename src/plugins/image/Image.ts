@@ -16,7 +16,7 @@ export default class Image extends Plugin {
   }
 
   initializeBrowser() {
-    if (!Editor.config.imageBrowserUrl) return
+    if (!this.editor.config.imageBrowserUrl) return
 
     this.browser = new ImageBrowser(this.editor)
   }
