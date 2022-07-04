@@ -18,6 +18,7 @@ export type EditorConfig = {
   placeholder?: string
   mentions?: MentionFeed[]
   imageBrowserUrl?: string
+  uploadAccept?: string
 }
 
 type EditorDefaultConfig = {
@@ -27,6 +28,7 @@ type EditorDefaultConfig = {
   placeholder?: string
   mentions?: MentionFeed[]
   imageBrowserUrl?: string
+  uploadAccept?: string
 }
 
 const defaultConfig: EditorDefaultConfig = {
@@ -54,6 +56,8 @@ const defaultConfig: EditorDefaultConfig = {
   plugins: [],
 
   imageBrowserUrl: '',
+
+  uploadAccept: '.gif,.jpeg,.jpg,.mov,.mp4,.png,.svg,.webm,.csv,.docx,.fodg,.fodp,.fods,.fodt,.gz,.log,.md,.odf,.odg,.odp,.ods,.odt,.pdf,.pptx,.tgz,.txt,.xls,.xlsx,.zip',
 }
 
 /**
@@ -116,8 +120,25 @@ export default class Editor {
     let editor = document.createElement('div')
     editor.classList.add('markdown-editor')
 
+    editor.addEventListener('drop', (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      const files = e.dataTransfer.files
+      if (files.length === 0) return;
+
+      this.onAttachmentsChange(...files)
+    })
+
+    editor.addEventListener('dragover', (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+    })
+
+    let writeContainer = document.createElement('div')
+    writeContainer.classList.add('markdown-editor-write')
+
     this.textarea = document.createElement('textarea')
-    this.textarea.classList.add('markdown-editor-write')
     this.textarea.name = this.config.key
     this.textarea.id = this.config.key
     this.textarea.value = initialValue
@@ -126,8 +147,35 @@ export default class Editor {
     this.textarea.addEventListener('input', this.autoresize.bind(this))
     this.textarea.addEventListener('input', this.updatePreview.bind(this))
     this.textarea.addEventListener('input', this.onValueChange.bind(this))
+    this.textarea.addEventListener('paste', this.onPaste.bind(this))
 
-    editor.appendChild(this.textarea)
+    writeContainer.appendChild(this.textarea)
+
+    let fileInputContainer = document.createElement('label')
+    fileInputContainer.classList.add('markdown-editor-file-input')
+
+    let labelContent = document.createElement('span')
+    labelContent.id = this.config.key + '-label-content'
+    labelContent.innerHTML = 'Attach files by dragging & dropping, selecting or pasting them.'
+    fileInputContainer.appendChild(labelContent)
+
+    let fileInput = document.createElement('input')
+    fileInput.type = 'file'
+    fileInput.multiple = true
+    fileInput.accept = this.config.uploadAccept
+
+    fileInput.addEventListener('change', (e: any) => {
+      const files = e.target.files
+      if (files.length === 0) return;
+
+      this.onAttachmentsChange(...files)
+    })
+
+    fileInputContainer.appendChild(fileInput)
+
+    writeContainer.appendChild(fileInputContainer)
+
+    editor.appendChild(writeContainer)
 
     this.preview = document.createElement('div')
     this.preview.classList.add('markdown-editor-preview')
@@ -225,6 +273,26 @@ export default class Editor {
   onValueChange() {
     if (this.eventCallbacks['change'] && typeof this.eventCallbacks['change'] === 'function') {
       this.eventCallbacks['change']()
+    }
+  }
+
+  onPaste(event: ClipboardEvent) {
+    const items = event.clipboardData.items;
+    if (items.length === 0) return;
+
+    for (const item of items) {
+      if (item.kind !== 'file') continue;
+
+      const file = item.getAsFile();
+      if (!file) continue;
+
+      this.onAttachmentsChange(file)
+    }
+  }
+
+  onAttachmentsChange(...files: File[]) {
+    if (this.eventCallbacks['attachments'] && typeof this.eventCallbacks['attachments'] === 'function') {
+      this.eventCallbacks['attachments'](files)
     }
   }
 

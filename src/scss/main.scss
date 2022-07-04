@@ -60,7 +60,19 @@
     }
 
     .markdown-editor-write {
-      @apply w-full h-full outline-none resize-none border-none p-5;
+      @apply divide-y divide-dashed divide-gray-300;
+
+      textarea {
+        @apply w-full h-full outline-none resize-none border-none p-5;
+      }
+
+      .markdown-editor-file-input {
+        @apply w-full px-2.5 py-2 pb-1 text-sm block text-gray-500 cursor-pointer;
+
+        input[type=file] {
+          @apply hidden;
+        }
+      }
     }
 
     .markdown-editor-preview {
