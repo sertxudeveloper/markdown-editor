@@ -26,7 +26,7 @@ export type Mention = {
 
 export default class Mentions extends Plugin {
 
-  feeds: [MentionFeed];
+  feeds: MentionFeed[];
 
   debouncedHandler = debounce(this.handleMentions, 100);
 
