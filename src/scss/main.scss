@@ -52,22 +52,22 @@
   }
 
   .markdown-editor {
-    @apply flex flex-col relative min-h-[8rem];
+    @apply flex flex-col relative min-h-[10rem];
 
     .markdown-editor-write,
     .markdown-editor-preview {
-      @apply min-h-[8rem] max-h-[24rem] overflow-y-auto bg-transparent;
+      @apply min-h-[10rem] max-h-[26rem] overflow-y-auto bg-transparent;
     }
 
     .markdown-editor-write {
-      @apply divide-y divide-dashed divide-gray-300;
+      @apply divide-y divide-dashed divide-gray-300 flex-col;
 
       textarea {
-        @apply w-full h-full outline-none resize-none border-none p-5;
+        @apply w-full h-full outline-none resize-none border-none p-5 grow;
       }
 
       .markdown-editor-file-input {
-        @apply w-full px-2.5 py-2 pb-1 text-sm block text-gray-500 cursor-pointer;
+        @apply w-full px-2.5 py-2 pb-1 text-sm block text-gray-500 cursor-pointer shrink-0;
 
         input[type=file] {
           @apply hidden;
