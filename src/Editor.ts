@@ -14,21 +14,16 @@ import Mentions, { MentionFeed } from "./plugins/mentions/Mentions"
 
 export type EditorConfig = {
   key?: string
-  plugins?: Object[]
+  plugins?: any[]
   placeholder?: string
   mentions?: MentionFeed[]
   imageBrowserUrl?: string
   uploadAccept?: string
+  hasAttachments?: boolean
 }
 
-type EditorDefaultConfig = {
-  key?: string
-  plugins?: Object[]
-  builtinPlugins?: Object[]
-  placeholder?: string
-  mentions?: MentionFeed[]
-  imageBrowserUrl?: string
-  uploadAccept?: string
+type EditorDefaultConfig =  EditorConfig & {
+  builtinPlugins?: any[]
 }
 
 const defaultConfig: EditorDefaultConfig = {
@@ -67,7 +62,7 @@ export default class Editor {
 
   sourceElement?: HTMLElement | undefined
 
-  config: any = {}
+  config: EditorDefaultConfig = {}
 
   private eventCallbacks: object[] = []
 
@@ -120,20 +115,22 @@ export default class Editor {
     let editor = document.createElement('div')
     editor.classList.add('markdown-editor')
 
-    editor.addEventListener('drop', (e) => {
-      e.preventDefault()
-      e.stopPropagation()
+    if (this.config.hasAttachments) {
+      editor.addEventListener('drop', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
 
-      const files = e.dataTransfer.files
-      if (files.length === 0) return;
+        const files = e.dataTransfer.files
+        if (files.length === 0) return;
 
-      this.onAttachmentsChange(...files)
-    })
+        this.onAttachmentsChange(...files)
+      })
 
-    editor.addEventListener('dragover', (e) => {
-      e.preventDefault()
-      e.stopPropagation()
-    })
+      editor.addEventListener('dragover', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      })
+    }
 
     let writeContainer = document.createElement('div')
     writeContainer.classList.add('markdown-editor-write')
@@ -147,33 +144,38 @@ export default class Editor {
     this.textarea.addEventListener('input', this.autoresize.bind(this))
     this.textarea.addEventListener('input', this.updatePreview.bind(this))
     this.textarea.addEventListener('input', this.onValueChange.bind(this))
-    this.textarea.addEventListener('paste', this.onPaste.bind(this))
+
+    if (this.config.hasAttachments) {
+      this.textarea.addEventListener('paste', this.onPaste.bind(this))
+    }
 
     writeContainer.appendChild(this.textarea)
 
-    let fileInputContainer = document.createElement('label')
-    fileInputContainer.classList.add('markdown-editor-file-input')
+    if (this.config.hasAttachments) {
+      let fileInputContainer = document.createElement('label')
+      fileInputContainer.classList.add('markdown-editor-file-input')
 
-    let labelContent = document.createElement('span')
-    labelContent.id = this.config.key + '-label-content'
-    labelContent.innerHTML = 'Attach files by dragging & dropping, selecting or pasting them.'
-    fileInputContainer.appendChild(labelContent)
+      let labelContent = document.createElement('span')
+      labelContent.id = this.config.key + '-label-content'
+      labelContent.innerHTML = 'Attach files by dragging & dropping, selecting or pasting them.'
+      fileInputContainer.appendChild(labelContent)
 
-    let fileInput = document.createElement('input')
-    fileInput.type = 'file'
-    fileInput.multiple = true
-    fileInput.accept = this.config.uploadAccept
+      let fileInput = document.createElement('input')
+      fileInput.type = 'file'
+      fileInput.multiple = true
+      fileInput.accept = this.config.uploadAccept
 
-    fileInput.addEventListener('change', (e: any) => {
-      const files = e.target.files
-      if (files.length === 0) return;
+      fileInput.addEventListener('change', (e: any) => {
+        const files = e.target.files
+        if (files.length === 0) return;
 
-      this.onAttachmentsChange(...files)
-    })
+        this.onAttachmentsChange(...files)
+      })
 
-    fileInputContainer.appendChild(fileInput)
+      fileInputContainer.appendChild(fileInput)
 
-    writeContainer.appendChild(fileInputContainer)
+      writeContainer.appendChild(fileInputContainer)
+    }
 
     editor.appendChild(writeContainer)
 
