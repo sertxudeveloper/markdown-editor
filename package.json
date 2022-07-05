@@ -1,7 +1,7 @@
 {
   "name": "@sertxudeveloper/markdown-editor",
   "exportName": "MarkdownEditor",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A customizable markdown editor for your projects",
   "main": "./build/MarkdownEditor.js",
   "module": "./build/MarkdownEditor.js",
