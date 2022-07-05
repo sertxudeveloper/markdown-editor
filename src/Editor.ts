@@ -248,11 +248,11 @@ export default class Editor {
   /** Change the editor mode */
   private changeMode(mode: string) {
     if (mode === 'write') {
-      this.sourceElement.classList.add('markdown-editor-write')
-      this.sourceElement.classList.remove('markdown-editor-preview')
+      this.sourceElement.classList.add('markdown-write-mode')
+      this.sourceElement.classList.remove('markdown-preview-mode')
     } else {
-      this.sourceElement.classList.add('markdown-editor-preview')
-      this.sourceElement.classList.remove('markdown-editor-write')
+      this.sourceElement.classList.add('markdown-preview-mode')
+      this.sourceElement.classList.remove('markdown-write-mode')
     }
   }
 

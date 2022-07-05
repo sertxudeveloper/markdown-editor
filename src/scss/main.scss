@@ -100,10 +100,10 @@
     }
   }
 
-  &.markdown-editor-write {
+  &.markdown-write-mode {
 
     .markdown-editor-write {
-      @apply block;
+      @apply flex;
     }
 
     .markdown-editor-preview {
@@ -111,7 +111,7 @@
     }
   }
 
-  &.markdown-editor-preview {
+  &.markdown-preview-mode {
 
     .markdown-editor-write {
       @apply hidden;
