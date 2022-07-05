@@ -152,3 +152,39 @@
   }
 
 }
+
+.markdown-image-browser {
+  @apply absolute bg-gray-800 bg-opacity-50 h-full left-0 top-0 w-full z-30 p-12;
+
+  .browser-container {
+    @apply bg-white divide-gray-300 divide-y h-full shadow-xl w-full rounded-lg;
+
+    .browser-header {
+      @apply flex justify-between px-5 py-4 text-gray-900;
+
+      > span {
+        @apply block font-medium;
+      }
+
+      > button {
+        @apply leading-6 text-2xl;
+      }
+    }
+
+    .browser-grid {
+      @apply gap-4 grid grid-cols-6 p-4;
+
+      .browser-grid-item {
+        @apply flex flex-col;
+
+        > img {
+          @apply w-full h-full object-cover;
+        }
+
+        > div {
+          @apply mt-2 text-center text-gray-900 text-sm;
+        }
+      }
+    }
+  }
+}
