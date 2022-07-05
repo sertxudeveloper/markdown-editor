@@ -53,6 +53,8 @@ const defaultConfig: EditorDefaultConfig = {
   imageBrowserUrl: '',
 
   uploadAccept: '.gif,.jpeg,.jpg,.mov,.mp4,.png,.svg,.webm,.csv,.docx,.fodg,.fodp,.fods,.fodt,.gz,.log,.md,.odf,.odg,.odp,.ods,.odt,.pdf,.pptx,.tgz,.txt,.xls,.xlsx,.zip',
+
+  hasAttachments: false,
 }
 
 /**
