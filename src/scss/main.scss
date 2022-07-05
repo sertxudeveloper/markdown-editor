@@ -31,26 +31,6 @@
 
   }
 
-  &.markdown-editor-write {
-    .toolbar {
-      .mode-buttons {
-        > div.write {
-          @apply text-blue-500 border-b-blue-500;
-        }
-      }
-    }
-  }
-
-  &.markdown-editor-preview {
-    .toolbar {
-      .mode-buttons {
-        > div.preview {
-          @apply text-blue-500 border-b-blue-500;
-        }
-      }
-    }
-  }
-
   .markdown-editor {
     @apply flex flex-col relative min-h-[10rem];
 
@@ -102,6 +82,14 @@
 
   &.markdown-write-mode {
 
+    .toolbar {
+      .mode-buttons {
+        > .write-mode-button {
+          @apply text-blue-500 border-b-blue-500;
+        }
+      }
+    }
+
     .markdown-editor-write {
       @apply flex;
     }
@@ -112,6 +100,14 @@
   }
 
   &.markdown-preview-mode {
+
+    .toolbar {
+      .mode-buttons {
+        > .preview-mode-button {
+          @apply text-blue-500 border-b-blue-500;
+        }
+      }
+    }
 
     .markdown-editor-write {
       @apply hidden;

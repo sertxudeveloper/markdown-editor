@@ -215,7 +215,7 @@ export default class Editor {
     for (const mode of ['write', 'preview']) {
       let button = document.createElement('div')
       button.setAttribute('role', 'button')
-      button.classList.add(mode)
+      button.classList.add(`${mode}-mode-button`)
       button.onclick = () => this.changeMode(mode)
       button.innerText = mode
 
