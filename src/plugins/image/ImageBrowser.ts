@@ -122,6 +122,7 @@ export default class ImageBrowser {
   renderImage(image: Image): HTMLDivElement {
     const container = document.createElement("div")
     container.classList.add("browser-grid-item")
+    container.setAttribute('role', 'button')
 
     const img = document.createElement("img")
     img.src = image.url

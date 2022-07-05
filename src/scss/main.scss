@@ -153,10 +153,10 @@
   @apply absolute bg-gray-800 bg-opacity-50 h-full left-0 top-0 w-full z-30 p-12;
 
   .browser-container {
-    @apply bg-white divide-gray-300 divide-y h-full shadow-xl w-full rounded-lg;
+    @apply flex flex-col bg-white divide-gray-300 divide-y h-full shadow-xl w-full rounded-lg;
 
     .browser-header {
-      @apply flex justify-between px-5 py-4 text-gray-900;
+      @apply shrink-0 flex justify-between px-5 py-4 text-gray-900;
 
       > span {
         @apply block font-medium;
@@ -168,7 +168,7 @@
     }
 
     .browser-grid {
-      @apply gap-4 grid grid-cols-6 p-4;
+      @apply shrink-0 grow gap-4 grid grid-cols-6 p-4;
 
       .browser-grid-item {
         @apply flex flex-col;
