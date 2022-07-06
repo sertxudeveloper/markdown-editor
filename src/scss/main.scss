@@ -43,7 +43,7 @@
       @apply divide-y divide-dashed divide-gray-300 flex-col;
 
       textarea {
-        @apply w-full h-full outline-none resize-none border-none p-5 grow;
+        @apply w-full h-full outline-none resize-none border-none p-5 grow bg-transparent;
       }
 
       .markdown-editor-file-input {
