@@ -21,8 +21,11 @@ jobs:
 
       - run: npm install
       
-      - name: Update package.json version on release
-        uses: medallyon/update-package-version-on-release@v1
+      - name: match-tag-to-package-version
+        id: match-tag-to-package-version
+        uses: geritol/match-tag-to-package-version@latest
+        with:
+          TAG_PREFIX: v
 
       - run: npm run build
 
