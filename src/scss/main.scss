@@ -168,10 +168,10 @@
     }
 
     .browser-grid {
-      @apply shrink-0 grow gap-4 grid grid-cols-6 p-4;
+      @apply grow gap-4 grid grid-cols-6 p-4;
 
       .browser-grid-item {
-        @apply flex flex-col;
+        @apply flex flex-col h-56;
 
         > img {
           @apply w-full h-full object-cover;
