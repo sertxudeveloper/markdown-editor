@@ -13,18 +13,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
+
       - run: npm install
+      
+      - name: Update package.json version on release
+        uses: medallyon/update-package-version-on-release@v1
+
       - run: npm run build
+
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: |
             build
+
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
