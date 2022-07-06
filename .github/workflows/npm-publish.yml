@@ -20,9 +20,6 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - run: npm install
-      
-      - name: Update package version on release with semver
-        uses: pkgacek/update-package-version-on-release@v1.1
 
       - run: npm run build
 
