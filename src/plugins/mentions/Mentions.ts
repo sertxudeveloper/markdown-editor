@@ -153,6 +153,8 @@ export default class Mentions extends Plugin {
     // Fetch the mentions, render them, add the click event handler and append them to the listbox
     this.fetchMentions(prefix, search)
       .then(mentions => {
+        this.mentionsListbox.innerHTML = '';
+
         let mentionsElements = mentions.map((item): HTMLElement => {
           let element
 

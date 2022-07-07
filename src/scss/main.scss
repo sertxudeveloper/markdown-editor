@@ -53,30 +53,30 @@
           @apply hidden;
         }
       }
+
+      .mentions-listbox {
+        @apply border border-solid rounded-md shadow-md w-64 bg-white;
+
+        .mentions-listbox-item {
+          @apply py-2 px-3;
+
+          &:hover {
+            @apply bg-blue-100;
+          }
+
+          .mentions-listbox-item-name {
+            @apply text-gray-900 mr-2 text-sm font-medium;
+          }
+
+          .mentions-listbox-item-id {
+            @apply text-gray-600 text-sm;
+          }
+        }
+      }
     }
 
     .markdown-editor-preview {
       @apply max-w-none pt-5 px-5 pb-1 break-words;
-    }
-
-    .mentions-listbox {
-      @apply border rounded-md shadow-md w-64 bg-white;
-
-      .mentions-listbox-item {
-        @apply py-2 px-3;
-
-        &:hover {
-          @apply bg-blue-100;
-        }
-
-        .mentions-listbox-item-name {
-          @apply text-gray-900 mr-2 text-sm font-medium;
-        }
-
-        .mentions-listbox-item-id {
-          @apply text-gray-600 text-sm;
-        }
-      }
     }
   }
 
