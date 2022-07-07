@@ -40,14 +40,14 @@
     }
 
     .markdown-editor-write {
-      @apply divide-y divide-dashed divide-gray-300 flex-col;
+      @apply flex-col;
 
       textarea {
         @apply w-full h-full outline-none resize-none border-none p-5 grow bg-transparent;
       }
 
       .markdown-editor-file-input {
-        @apply w-full px-2.5 py-2 pb-1 text-sm block text-gray-500 cursor-pointer shrink-0;
+        @apply w-full px-2.5 py-2 pb-1 text-sm block text-gray-500 cursor-pointer shrink-0 border-t border-gray-300 border-dashed;
 
         input[type=file] {
           @apply hidden;
