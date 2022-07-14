@@ -93,7 +93,7 @@ export default class Mentions extends Plugin {
   }
 
   createRegExp(prefix: string, minimumCharacters: number): RegExp {
-    return new RegExp(`${prefix}[a-z\\d]*(?:[a-z\\d]|-(?=[a-z\\d])){${minimumCharacters},38}(?!\\w)`, 'g');
+    return new RegExp(`${prefix}[a-z\\d]*(?:[a-z\\d.]|-(?=[a-z\\d.])){${minimumCharacters},38}(?!\\w)`, 'g');
   }
 
   handleMentions(event: KeyboardEvent): void {
