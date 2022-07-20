@@ -1,32 +1,32 @@
-import BlockStyle from "../BlockStyle";
-import Plugin from "../Plugin";
+import BlockStyle from '../BlockStyle';
+import Plugin from '../Plugin';
 
-import icon from "./icon.svg";
+import icon from './icon.svg';
 
 export default class Underline extends Plugin {
-  getKey(): string {
-    return "underline";
-  }
-
-  getIcon(): string {
-    return icon;
-  }
-
-  getTitle(): string {
-    return "Underline (Ctrl+U)";
-  }
-
-  onKeyDown(event: KeyboardEvent): void {
-    if (event.ctrlKey && event.key === "u") {
-      event.preventDefault();
-      this.execute();
+    getKey(): string {
+        return 'underline';
     }
-  }
 
-  execute(value: string = ''): void {
-    if (!this.editor.textarea) return;
-    const textarea = this.editor.textarea;
+    getIcon(): string {
+        return icon;
+    }
 
-    BlockStyle.applyStyle(textarea, { prefix: "<u>", suffix: "</u>", trimFirst: true });
-  }
+    getTitle(): string {
+        return 'Underline (Ctrl+U)';
+    }
+
+    onKeyDown(event: KeyboardEvent): void {
+        if (event.ctrlKey && event.key === 'u') {
+            event.preventDefault();
+            this.execute();
+        }
+    }
+
+    execute(value: string = ''): void {
+        if (!this.editor.textarea) return;
+        const textarea = this.editor.textarea;
+
+        BlockStyle.applyStyle(textarea, { prefix: '<u>', suffix: '</u>', trimFirst: true });
+    }
 }

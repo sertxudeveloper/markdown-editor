@@ -1,33 +1,33 @@
-import Editor from "../Editor"
+import Editor from '../Editor';
 
 export default abstract class Plugin {
-  editor: Editor
+    editor: Editor;
 
-  constructor(editor: Editor) {
-    this.editor = editor
+    constructor(editor: Editor) {
+        this.editor = editor;
 
-    this.startListening()
-  }
+        this.startListening();
+    }
 
-  destroy() {
-    this.stopListening()
-  }
+    destroy() {
+        this.stopListening();
+    }
 
-  abstract getKey(): string
+    abstract getKey(): string;
 
-  abstract getTitle(): string
+    abstract getTitle(): string;
 
-  startListening() {
-    this.editor.textarea.addEventListener('keydown', this.onKeyDown.bind(this))
-  }
+    startListening() {
+        this.editor.textarea.addEventListener('keydown', this.onKeyDown.bind(this));
+    }
 
-  stopListening() {
-    this.editor.textarea.removeEventListener('keydown', this.onKeyDown.bind(this))
-  }
+    stopListening() {
+        this.editor.textarea.removeEventListener('keydown', this.onKeyDown.bind(this));
+    }
 
-  abstract getIcon(): string
+    abstract getIcon(): string;
 
-  abstract onKeyDown(event: KeyboardEvent): void
+    abstract onKeyDown(event: KeyboardEvent): void;
 
-  abstract execute(value: string): void
+    abstract execute(value: string): void;
 }

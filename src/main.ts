@@ -1,4 +1,4 @@
-import "./scss/main.scss"
-import MarkdownEditor from "./Editor"
+import './scss/main.scss';
+import MarkdownEditor from './Editor';
 
-export default MarkdownEditor
+export default MarkdownEditor;
