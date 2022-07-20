@@ -22,7 +22,7 @@ jobs:
         run: npm install prettier
         
       - name: Run Prettier
-        run: npx prettier --write .
+        run: npx prettier --write src
           
       - name: Commit linted files
         uses: stefanzweifel/git-auto-commit-action@v4
