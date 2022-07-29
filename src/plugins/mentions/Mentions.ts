@@ -32,10 +32,7 @@ export default class Mentions extends Plugin {
     mentionsListbox?: HTMLDivElement;
 
     constructor(editor: Editor) {
-        if (editor.config.mentions.length === 0) return;
-
         super(editor);
-
         this.initializeFeeds();
     }
 
@@ -52,6 +49,8 @@ export default class Mentions extends Plugin {
     }
 
     onKeyDown(event: KeyboardEvent): void {
+        if (this.editor.config.mentions.length === 0) return;
+
         this.editor.textarea.addEventListener('keyup', this.onKeyUp.bind(this), { once: true });
     }
 
