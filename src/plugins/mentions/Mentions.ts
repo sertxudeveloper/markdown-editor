@@ -93,7 +93,9 @@ export default class Mentions extends Plugin {
             } else if (event.key === 'Enter' || event.key === 'Tab') {
                 event.preventDefault();
 
-                let current: HTMLDivElement = this.mentionsListbox.querySelector('.mentions-listbox-item-active');
+                let current: HTMLDivElement = this.mentionsListbox.querySelector(
+                    '.mentions-listbox-item-active'
+                );
 
                 if (current) {
                     current.click();
