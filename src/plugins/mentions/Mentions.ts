@@ -52,10 +52,63 @@ export default class Mentions extends Plugin {
         if (this.editor.config.mentions.length === 0) return;
 
         this.editor.textarea.addEventListener('keyup', this.onKeyUp.bind(this), { once: true });
+
+        if (this.mentionsListbox) {
+            let items = this.mentionsListbox.querySelectorAll('.mentions-listbox-item');
+
+            if (event.key === 'ArrowUp') {
+                event.preventDefault();
+
+                let current = this.mentionsListbox.querySelector('.mentions-listbox-item-active');
+
+                if (!current) {
+                    items[items.length - 1].classList.add('mentions-listbox-item-active');
+                } else {
+                    let index = Array.from(items).indexOf(current);
+                    current.classList.remove('mentions-listbox-item-active');
+
+                    if (index > 0) {
+                        items[index - 1].classList.add('mentions-listbox-item-active');
+                    } else {
+                        items[items.length - 1].classList.add('mentions-listbox-item-active');
+                    }
+                }
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+
+                let current = this.mentionsListbox.querySelector('.mentions-listbox-item-active');
+
+                if (!current) {
+                    items[0].classList.add('mentions-listbox-item-active');
+                } else {
+                    let index = Array.from(items).indexOf(current);
+                    current.classList.remove('mentions-listbox-item-active');
+
+                    if (index + 1 < items.length) {
+                        items[index + 1].classList.add('mentions-listbox-item-active');
+                    } else {
+                        items[0].classList.add('mentions-listbox-item-active');
+                    }
+                }
+            } else if (event.key === 'Enter' || event.key === 'Tab') {
+                event.preventDefault();
+
+                let current: HTMLDivElement = this.mentionsListbox.querySelector(
+                    '.mentions-listbox-item-active'
+                );
+
+                if (current) {
+                    current.click();
+                }
+            }
+        }
     }
 
     /** Use keyup instead of keydown event, pressed character not inserted until keyup */
     onKeyUp(event: KeyboardEvent): void {
+        // Check if the key is a letter or a number
+        if (event.key.length > 1 && event.key !== 'Backspace' && event.key !== 'Delete') return;
+
         this.debouncedHandler(event);
     }
 
@@ -171,6 +224,7 @@ export default class Mentions extends Plugin {
 
                 // Add the click event handler
                 element.addEventListener('click', this.onMentionClick.bind(this, item));
+                element.role = 'button';
 
                 return element;
             });
@@ -178,6 +232,9 @@ export default class Mentions extends Plugin {
             if (!mentionsElements.length) return;
 
             this.mentionsListbox.append(...mentionsElements);
+
+            // Mark the first item as active
+            mentionsElements[0].classList.add('mentions-listbox-item-active');
 
             this.editor.textarea.parentElement.appendChild(this.mentionsListbox);
         });
