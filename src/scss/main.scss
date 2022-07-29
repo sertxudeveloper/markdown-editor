@@ -42,7 +42,7 @@
             @apply flex-col;
 
             textarea {
-                @apply w-full h-full outline-none resize-none border-none p-5 grow bg-transparent;
+                @apply h-full outline-none resize-none border-none p-5 grow bg-transparent;
             }
 
             .markdown-editor-file-input {
@@ -135,6 +135,10 @@
 
             > p {
                 @apply whitespace-pre-line leading-normal;
+            }
+
+            :first-child {
+                @apply mt-0;
             }
 
             blockquote > p {
